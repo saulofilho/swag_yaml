@@ -1,0 +1,41 @@
+---
+get:
+  get:
+    description: ''
+    produces: ''
+    parameters: ''
+    responses:
+      '200:':
+        description: ''
+        schema: ''
+      default:
+        description: unexpected error
+        schema: []
+  post:
+    description: ''
+    produces: ''
+    parameters: []
+    responses:
+      '200:':
+        description: ''
+        schema: []
+      default:
+        description: unexpected error
+        schema: []
+  patch: {}
+  delete:
+    description: ''
+    produces: ''
+    parameters:
+    - name: id
+      in: path
+      description: id of entry to be deleted.
+      required: 'true'
+      type: integer
+    responses:
+      '200:':
+        description: ''
+        schema: []
+      default:
+        description: unexpected error
+        schema: ''

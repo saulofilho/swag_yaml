@@ -1,0 +1,44 @@
+version: "3.8"
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+
+  db-migration:
+    build:
+      context: .
+      args:
+        GITLAB_AUTH_TOKEN: ${GITLAB_AUTH_TOKEN}
+    command: bundle exec bin/rails db:prepare db:seed
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    environment:
+      RAILS_ENV: development
+
+  minato-svc:
+    build:
+      context: .
+      args:
+        GITLAB_AUTH_TOKEN: ${GITLAB_AUTH_TOKEN}
+    volumes:
+      - .:/app
+    ports:
+      - "1234:1234"
+      - "3000:3000"
+      - "26162:26162"
+    depends_on:
+      - db
+      - db-migration
+    environment:
+      API_DEFAULT_HOST: localhost:3000
+      RAILS_ENV: development
+
+networks:
+  minato:
+    name: minato-network
+    external: true
